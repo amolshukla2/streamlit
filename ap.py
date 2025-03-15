@@ -8,7 +8,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 
-# Load environment variables
+
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 if not api_key:
@@ -22,7 +22,7 @@ except Exception as e:
     st.error(f"Error configuring Gemini API: {str(e)}")
     st.stop()
 
-# Function to generate a professional resume using Gemini API
+
 def generate_resume(name, jobs, educations, job_type, tone, length, skills):
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
@@ -60,7 +60,7 @@ def generate_resume(name, jobs, educations, job_type, tone, length, skills):
         st.error(f"Error generating resume: {str(e)}")
         return None
 
-# Function to create a .docx file
+
 def create_docx(resume_text, name):
     doc = Document()
     doc.add_heading(f"{name}'s Resume", 0)
@@ -75,7 +75,7 @@ def create_docx(resume_text, name):
     doc.save(buffer)
     return buffer.getvalue()
 
-# Function to create a .pdf file
+
 def create_pdf(resume_text, name):
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
@@ -106,7 +106,7 @@ def create_pdf(resume_text, name):
     buffer.seek(0)
     return buffer.getvalue()
 
-# Streamlit UI
+
 def main():
     # Set page configuration
     st.set_page_config(page_title="AI Resume Builder", page_icon="📄", layout="wide")
@@ -158,12 +158,12 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-    # Header
+ 
     st.markdown('<div class="header">AI Resume Builder</div>', unsafe_allow_html=True)
     st.markdown('<div class="subheader">Craft a Professional Resume with AI Precision</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    # Sidebar for additional settings
+  
     with st.sidebar:
         st.header("Settings")
         download_format = st.selectbox(
@@ -174,7 +174,7 @@ def main():
         st.markdown("---")
         st.markdown("Powered by Gemini & Streamlit")
 
-    # Main input form
+ 
     st.markdown('<div class="section-header">Tell Us About Yourself</div>', unsafe_allow_html=True)
     with st.form(key="resume_form"):
         # Personal Information
@@ -184,14 +184,14 @@ def main():
             help="Enter your full name as it should appear on the resume."
         )
 
-        # Skills
+      
         skills = st.text_input(
             "Skills (comma-separated) *",
             placeholder="e.g., Python, JavaScript, Project Management",
             help="List your skills relevant to the job role."
         )
 
-        # Job Type, Tone, and Length
+      
         col1, col2, col3 = st.columns(3)
         with col1:
             job_type = st.selectbox(
@@ -235,7 +235,7 @@ def main():
                         "salary": salary
                     })
 
-        # Education Section (Dynamic Education Entries)
+       
         st.markdown('<div class="section-header">Education</div>', unsafe_allow_html=True)
         educations = []
         for i in range(2):  # Allow up to 2 education entries (e.g., high school and college)
@@ -254,11 +254,11 @@ def main():
                         "grade": grade
                     })
 
-        # Submit button
+     
         st.markdown("---")
         submit_button = st.form_submit_button("Generate Resume")
 
-    # Handle form submission
+  
     if submit_button:
         if name and skills and job_type and jobs and educations:
             with st.spinner("Crafting your professional resume..."):
